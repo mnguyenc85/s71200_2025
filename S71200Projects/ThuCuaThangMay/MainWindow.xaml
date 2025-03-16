@@ -1,0 +1,85 @@
+﻿<Window x:Class="ThuCuaThangMay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThuCuaThangMay"
+        xmlns:cctrls="clr-namespace:ThuCuaThangMay.Core.Controls"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Title="Kiểm tra thang máy" Height="640" Width="960"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.Resources>
+        <Style x:Key="FrontToggleBtnStyle" TargetType="ToggleButton">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="72"/>
+            <Setter Property="Margin" Value="1"/>
+        </Style>
+        <Style x:Key="FrontBtnStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="72"/>
+            <Setter Property="Margin" Value="1"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File" Margin="2">
+                <MenuItem Header="Cài đặt..."/>
+                <Separator/>
+                <MenuItem Header="Thoát"/>
+            </MenuItem>
+        </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom" Background="WhiteSmoke" FontSize="14">
+            <ToggleButton x:Name="BtConnect" Content="Kết nối" Click="BtConnect_Click" IsChecked="True" Padding="3 1"/>
+            <Border x:Name="bdrConnStatus" CornerRadius="3">
+                <TextBlock x:Name="lblConnStatus" Text="Không kết nối" Padding="3 1" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock x:Name="lblIPAddr" Text="0.0.0.0" VerticalAlignment="Center"/>
+            <Separator/>
+            <TextBlock x:Name="lblReadTime" Text="0" Padding="2 1" VerticalAlignment="Center"/>
+        </StatusBar>
+
+        <StatusBar x:Name="pnlVars" DockPanel.Dock="Top" Background="WhiteSmoke">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <cctrls:LEDIndicator x:Name="LEDStart" Title="Start" Width="84" Height="20" IsOn="False" OnColor="LimeGreen" FontSize="14"/>
+                        <cctrls:LEDIndicator x:Name="LEDStop" Title="Stop" Width="84" Height="20" IsOn="False" OnColor="Red" FontSize="14" Grid.Row="1"/>
+                        <cctrls:LEDIndicator x:Name="LEDRunning" Title="Running" Width="84" Height="20" IsOn="False" OnColor="LimeGreen" FontSize="14" Grid.Column="1"/>
+                        <cctrls:LEDIndicator x:Name="LEDForward" Title="Forward" Width="84" Height="20" IsOn="False" OnColor="LimeGreen" FontSize="14" Grid.Column="1" Grid.Row="1"/>
+                    </Grid>
+                    <GroupBox Header="Speed">
+                        <Border BorderBrush="Gray" Background="White" Width="150">
+                            <TextBlock x:Name="lblSpeed" Text="0" FontSize="32" VerticalAlignment="Center" Margin="6 1"/>
+                        </Border>
+                    </GroupBox>
+                    <GroupBox Header="Distance">
+                        <Border BorderBrush="Gray" Background="White" Width="150">
+                            <TextBlock x:Name="lblDistance" Text="0" FontSize="32" VerticalAlignment="Center" Margin="6 1"/>
+                        </Border>
+                    </GroupBox>
+                </StackPanel>
+                <StackPanel x:Name="pnlButtons" Background="WhiteSmoke" Orientation="Horizontal" Margin="0 3">
+                    <Button x:Name="BtStart" Content="Start" Style="{StaticResource FrontBtnStyle}" Click="BtStart_Click" Background="LightGray"/>
+                    <Button x:Name="BtStop" Content="Stop" Style="{StaticResource FrontBtnStyle}" Background="LightGray"/>
+                    <ToggleButton x:Name="BtBackward" Content="Backward" Style="{StaticResource FrontToggleBtnStyle}" Background="LightGray"/>
+                </StackPanel>
+            </StackPanel>
+        </StatusBar>
+
+
+        <DockPanel>
+            <oxy:PlotView x:Name="Plot1" Margin="6"/>
+        </DockPanel>
+    </DockPanel>
+</Window>
