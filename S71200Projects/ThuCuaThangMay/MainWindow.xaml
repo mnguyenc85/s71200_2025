@@ -71,7 +71,7 @@
                 </StackPanel>
                 <StackPanel x:Name="pnlButtons" Background="WhiteSmoke" Orientation="Horizontal" Margin="0 3">
                     <Button x:Name="BtStart" Content="Start" Style="{StaticResource FrontBtnStyle}" Click="BtStart_Click" Background="LightGray"/>
-                    <Button x:Name="BtStop" Content="Stop" Style="{StaticResource FrontBtnStyle}" Background="LightGray"/>
+                    <Button x:Name="BtStop" Content="Stop" Style="{StaticResource FrontBtnStyle}" Background="LightGray" Click="BtStop_Click"/>
                     <ToggleButton x:Name="BtBackward" Content="Backward" Style="{StaticResource FrontToggleBtnStyle}" Background="LightGray"/>
                 </StackPanel>
             </StackPanel>

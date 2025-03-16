@@ -95,7 +95,7 @@ namespace ThuCuaThangMay
                     bdrConnStatus.Background = Brushes.Wheat;
                 }
             }
-            if (_s7conn.IsCommunicating)
+            if (_s7conn.Db.IsStart)
             {
                 BtStart.Background = Brushes.LightGreen;
             }
@@ -124,7 +124,7 @@ namespace ThuCuaThangMay
                     lblDistance.Text = db.Distance.ToString();
 
                     LEDStart.IsOn = db.IsStart;
-                    LEDStart.IsOn = db.IsStop;
+                    LEDStop.IsOn = db.IsStop;
                     LEDRunning.IsOn = db.IsRunning;
                     LEDForward.IsOn = db.IsForward;
 
@@ -137,7 +137,10 @@ namespace ThuCuaThangMay
                 }
                 else
                 {
-                    _s7conn.StartComm();
+                    if (_s7conn.State == CommStates.Opened)
+                    {
+                        _s7conn.StartComm();
+                    }
                 }
             }
         }
@@ -159,6 +162,12 @@ namespace ThuCuaThangMay
 
         private void BtStart_Click(object sender, RoutedEventArgs e)
         {
+            _s7conn.PushStart();
+        }
+
+        private void BtStop_Click(object sender, RoutedEventArgs e)
+        {
+            _s7conn.PushStop();
         }
 
         #region OxyPlot
@@ -180,12 +189,13 @@ namespace ThuCuaThangMay
                 Position = AxisPosition.Left,
                 Title = "Sensor Value",
                 Minimum = -1,  // Example range for sine wave
-                Maximum = 4000
+                Maximum = 15
             });
 
             _plotModel.Series.Add(_lineSeries);
             Plot1.Model = _plotModel;
         }
         #endregion
+
     }
 }

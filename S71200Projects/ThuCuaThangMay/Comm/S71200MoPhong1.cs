@@ -12,7 +12,7 @@ namespace ThuCuaThangMay.Comm
         private Queue<WriteCmd> _cmds = new();
 
         public S71200MoPhong1(string? addr): base(addr) {
-            Db = _db;
+            Db = _dbFull;
         }
 
         protected override async Task Comm(Plc plc, long t0)
@@ -30,13 +30,24 @@ namespace ThuCuaThangMay.Comm
             }
         }
 
-        public void SetStart(bool v)
+        public void PushStart()
         {
             var cmd = new WriteCmd()
             {
                 ByteAddr = 0,
                 BitAddr = 0,
-                Data = v
+                Data = !Db.IsStart
+            };
+            _cmds.Enqueue(cmd);
+        }
+
+        public void PushStop()
+        {
+            var cmd = new WriteCmd()
+            {
+                ByteAddr = 0,
+                BitAddr = 1,
+                Data = !Db.IsStop
             };
             _cmds.Enqueue(cmd);
         }
@@ -64,6 +75,7 @@ namespace ThuCuaThangMay.Comm
             IsParseData = true;
 
             IsStart = (_buf[0] & 1) == 1;
+            IsStop = (_buf[0] & 2) == 2;
             IsRunning = (_buf[0] & 4) == 4;
             IsForward = (_buf[0] & 8) != 8;
             Spd = ParseFloat(_buf, 2);
@@ -90,6 +102,7 @@ namespace ThuCuaThangMay.Comm
             IsParseData = true;
 
             IsStart = (_buf[0] & 1) == 1;
+            IsStop = (_buf[0] & 2) == 2;
             IsRunning = (_buf[0] & 4) == 4;
             IsForward = (_buf[0] & 8) != 8;
 
