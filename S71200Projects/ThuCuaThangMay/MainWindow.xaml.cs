@@ -34,6 +34,9 @@ namespace ThuCuaThangMay
         private PlotModel _plotModel;
         private LineSeries _lineSeries;
         private long _data_t0;
+        private bool _isStart0 = false;
+        private bool _isForward0 = true;
+        private bool _docDuLieu = false;
 
         public MainWindow()
         {
@@ -118,6 +121,7 @@ namespace ThuCuaThangMay
                 {
                     lblReadTime.Text = $"{_s7conn.ReadTime / 10000} / {_s7conn.RealCycleTime / 10000} ms";
 
+                    #region Hiển thị giao diện
                     var db = _s7conn.Db;
 
                     lblSpeed.Text = db.Spd.ToString();
@@ -125,15 +129,37 @@ namespace ThuCuaThangMay
 
                     LEDStart.IsOn = db.IsStart;
                     LEDStop.IsOn = db.IsStop;
-                    LEDRunning.IsOn = db.IsRunning;
                     LEDForward.IsOn = db.IsForward;
 
-                    if (db.T > _data_t0)
+                    LEDRunning.IsOn = db.IsRunning;
+
+                    if (_isStart0 != db.IsStart)
                     {
-                        _lineSeries.Points.Add(new DataPoint(db.T / 10000000d, db.Distance));
-                        _t0 = db.T;
-                        _plotModel.InvalidatePlot(true);
+                        if (db.IsStart)
+                        {
+                            _lineSeries.Points.Clear();
+                            _data_t0 = 0;
+                        }
+                        _docDuLieu = db.IsStart;
+                        _isStart0 = db.IsStart;
                     }
+
+                    if (_isForward0 != db.IsForward)
+                    {
+                        BtBackward.Content = db.IsForward ? "Lùi" : "Tiến";
+                        _isForward0 = db.IsForward;
+                    }
+
+                    if (_docDuLieu)
+                    {
+                        if (db.T > _data_t0)
+                        {
+                            _lineSeries.Points.Add(new DataPoint(db.T / 10000000d, db.Distance));
+                            _t0 = db.T;
+                            _plotModel.InvalidatePlot(true);
+                        }
+                    }
+                    #endregion
                 }
                 else
                 {
@@ -197,5 +223,9 @@ namespace ThuCuaThangMay
         }
         #endregion
 
+        private void BtBackward_Click(object sender, RoutedEventArgs e)
+        {
+            _s7conn.PushBackward();
+        }
     }
 }

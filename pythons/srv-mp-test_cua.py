@@ -45,7 +45,7 @@ class Simulator:
         self.running = self.start and not self.stop
 
         if self.running:
-            self.spd = (12 - abs(self.distance - 5)) * 0.01
+            self.spd = round((12 - abs(self.distance - 5)) * 0.01, 3)
             s = delta * self.spd
             if not self.dir:
                 if self.distance + s < 10: self.distance += s

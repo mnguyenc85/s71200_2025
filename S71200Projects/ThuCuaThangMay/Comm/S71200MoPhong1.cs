@@ -36,6 +36,7 @@ namespace ThuCuaThangMay.Comm
             {
                 ByteAddr = 0,
                 BitAddr = 0,
+                Type = WriteCmdTypes.Bit,
                 Data = !Db.IsStart
             };
             _cmds.Enqueue(cmd);
@@ -47,7 +48,20 @@ namespace ThuCuaThangMay.Comm
             {
                 ByteAddr = 0,
                 BitAddr = 1,
+                Type = WriteCmdTypes.Bit,
                 Data = !Db.IsStop
+            };
+            _cmds.Enqueue(cmd);
+        }
+
+        public void PushBackward()
+        {
+            var cmd = new WriteCmd()
+            {
+                ByteAddr = 0,
+                BitAddr = 2,
+                Type = WriteCmdTypes.Bit,
+                Data = Db.IsForward                         // DBX0.2 = 0 -> Forward
             };
             _cmds.Enqueue(cmd);
         }
@@ -76,8 +90,8 @@ namespace ThuCuaThangMay.Comm
 
             IsStart = (_buf[0] & 1) == 1;
             IsStop = (_buf[0] & 2) == 2;
-            IsRunning = (_buf[0] & 4) == 4;
-            IsForward = (_buf[0] & 8) != 8;
+            IsForward = (_buf[0] & 4) != 4;
+            IsRunning = (_buf[1] & 1) == 1;
             Spd = ParseFloat(_buf, 2);
             Distance = ParseFloat(_buf, 6);
 
@@ -103,8 +117,8 @@ namespace ThuCuaThangMay.Comm
 
             IsStart = (_buf[0] & 1) == 1;
             IsStop = (_buf[0] & 2) == 2;
-            IsRunning = (_buf[0] & 4) == 4;
-            IsForward = (_buf[0] & 8) != 8;
+            IsForward = (_buf[0] & 4) == 4;
+            IsRunning = (_buf[1] & 1) == 1;
 
             T = DateTime.Now.Ticks - t0;
             IsParseData = false;

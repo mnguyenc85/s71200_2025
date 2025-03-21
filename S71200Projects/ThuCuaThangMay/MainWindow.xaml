@@ -13,12 +13,12 @@
     <Window.Resources>
         <Style x:Key="FrontToggleBtnStyle" TargetType="ToggleButton">
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Width" Value="72"/>
+            <Setter Property="Width" Value="96"/>
             <Setter Property="Margin" Value="1"/>
         </Style>
         <Style x:Key="FrontBtnStyle" TargetType="Button">
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Width" Value="72"/>
+            <Setter Property="Width" Value="96"/>
             <Setter Property="Margin" Value="1"/>
         </Style>
     </Window.Resources>
@@ -42,6 +42,7 @@
         </StatusBar>
 
         <StatusBar x:Name="pnlVars" DockPanel.Dock="Top" Background="WhiteSmoke">
+            <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Grid Margin="6">
@@ -70,15 +71,20 @@
                     </GroupBox>
                 </StackPanel>
                 <StackPanel x:Name="pnlButtons" Background="WhiteSmoke" Orientation="Horizontal" Margin="0 3">
-                    <Button x:Name="BtStart" Content="Start" Style="{StaticResource FrontBtnStyle}" Click="BtStart_Click" Background="LightGray"/>
-                    <Button x:Name="BtStop" Content="Stop" Style="{StaticResource FrontBtnStyle}" Background="LightGray" Click="BtStop_Click"/>
-                    <ToggleButton x:Name="BtBackward" Content="Backward" Style="{StaticResource FrontToggleBtnStyle}" Background="LightGray"/>
-                </StackPanel>
+                    <Button x:Name="BtStart" Content="Start" Style="{StaticResource FrontBtnStyle}" Click="BtStart_Click"/>
+                    <Button x:Name="BtStop" Content="Stop" Style="{StaticResource FrontBtnStyle}" Click="BtStop_Click"/>
+                    <Button x:Name="BtBackward" Content="Chạy lùi" Style="{StaticResource FrontBtnStyle}" Click="BtBackward_Click"/>
+                        <Button x:Name="BtCalib" Content="Hiệu chuẩn" Style="{StaticResource FrontBtnStyle}"/>
+                    </StackPanel>
+            </StackPanel>
             </StackPanel>
         </StatusBar>
 
 
         <DockPanel>
+            <StackPanel Background="WhiteSmoke">
+                <Button x:Name="BtChartZoomAll" Content="All" Margin="3" Width="32"/>
+            </StackPanel>
             <oxy:PlotView x:Name="Plot1" Margin="6"/>
         </DockPanel>
     </DockPanel>
